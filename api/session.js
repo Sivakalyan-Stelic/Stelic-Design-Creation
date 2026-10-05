@@ -1,0 +1,9 @@
+import { send, methodNotAllowed } from '../lib/http.js';
+import { requireUser } from '../lib/auth.js';
+
+// GET /api/session   who is signed in (401 if nobody)
+export default function handler(req, res) {
+  if (req.method !== 'GET') return methodNotAllowed(res, ['GET']);
+  const user = requireUser(req, res);
+  if (user) send(res, 200, { user });
+}
